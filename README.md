@@ -25,6 +25,10 @@ _cpu/irq.graph_:
 	vtitle  "percent"
 	area    :stacked
 
+	# helper to locate data in the tree.  You give it
+	# the hostname in the constructor - see later example -
+	# and it will then find mun/cpu/irq for example in
+	# that specific host data tree
 	service :munin, :cpu do
 	  field :irq,    :derivative => true,
 			 :scale => 0.001,
@@ -63,6 +67,12 @@ _cpu/overview.graph_
 			 :alias => "User"
 	end
 
+	# draws a vertical line for every time that puppet ran on the host
+	# info is the hash that gets passed into the constructor, see later
+	# example
+	field :puppet, :color => "blue",
+		       :alias => "Puppet Run",
+		       :data  => "drawAsInfinite(#{info[:hostname}.puppet.time.total)"
 
 To use these 2 files in your own code simply do:
 
