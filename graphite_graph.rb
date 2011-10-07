@@ -1,9 +1,10 @@
-#    title  "this is a title"
-#    vtitle "v label"
-#    width  100
-#    height 100
-#    from   "-2days"
-#    area   :none
+#    title          "this is a title"
+#    vtitle         "v label"
+#    width          100
+#    height         100
+#    from           "-2days"
+#    area           :none
+#    description
 #
 #    field  :foo, :data => "some.data.item",
 #                 :derivative => false,
@@ -40,9 +41,17 @@ class GraphiteGraph
                        :height => 250,
                        :from => "-1hour",
                        :surpress => false,
-                       :line => false,
+                       :description => nil,
                        :area => :none}.merge(@overrides)
 
+    end
+
+    def [](key)
+        if key == :url
+            url
+        else
+            @properties[key]
+        end
     end
 
     def method_missing(meth, *args)
