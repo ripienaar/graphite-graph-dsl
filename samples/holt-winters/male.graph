@@ -1,0 +1,13 @@
+title          "Male Site Users"
+vtitle         "users"
+width          800
+height         500
+from           "-2days"
+area           :none
+description    "Male users on the site"
+
+hw_predict  :foo, :data => "sumSeries(web*.site.users.male)",
+                  :alias => "Male",
+                  :derivative => false,
+                  :color => "yellow"
+
