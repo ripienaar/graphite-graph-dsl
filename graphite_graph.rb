@@ -49,8 +49,8 @@ class GraphiteGraph
   end
 
   def defaults
-    @properties = {:title => "",
-                   :vtitle => "",
+    @properties = {:title => nil,
+                   :vtitle => nil,
                    :width => 500,
                    :height => 250,
                    :from => "-1hour",
@@ -85,7 +85,7 @@ class GraphiteGraph
     @targets = {}
     @target_order = []
 
-    self.instance_eval(File.read(@file))
+    self.instance_eval(File.read(@file)) unless @file == :none
   end
 
   def service(service, data, &blk)
@@ -209,7 +209,7 @@ class GraphiteGraph
     target_order << name
   end
 
-  def url(format = nil)
+  def url(format = nil, url=true)
     return nil if properties[:surpress]
 
     url_parts = []
@@ -254,6 +254,10 @@ class GraphiteGraph
 
     url_parts << "format=#{format}" if format
 
-    url_parts.join("&")
+    if url
+      url_parts.join("&")
+    else
+      url_parts
+    end
   end
 end
