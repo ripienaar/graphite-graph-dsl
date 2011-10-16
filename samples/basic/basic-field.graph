@@ -1,6 +1,6 @@
 title "Test Graph"
 
-field :iowait, :data => "sumSeries(*.munin.load.load)",
+field :iowait, :data => "sumSeries(example.munin.load.load)",
                :color => "red",
                :alias => "Load Average",
 	       :derivative => true
