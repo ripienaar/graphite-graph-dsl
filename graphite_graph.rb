@@ -43,6 +43,7 @@ class GraphiteGraph
     @file = file
     @munin_mode = false
     @overrides = overrides
+    @linecount = 0
 
     load_graph
   end
@@ -56,6 +57,8 @@ class GraphiteGraph
                    :surpress => false,
                    :description => nil,
                    :hide_legend => nil,
+                   :ymin => nil,
+                   :ymax => nil,
                    :area => :none}.merge(@overrides)
 
   end
@@ -153,9 +156,8 @@ class GraphiteGraph
       [args[:critical]].flatten.each_with_index do |crit, index|
         color = args[:critical_color] || "red"
         caption = "#{args[:alias]} Critical"
-        data = "threshold(#{crit})"
 
-        field "#{name}_crit_#{index}", {:dashed => true, :data => data, :color => color, :alias => caption}
+        line :caption => "#{name}_crit_#{index}", :value => crit, :color => color, :dashed => true
       end
     end
 
@@ -163,9 +165,8 @@ class GraphiteGraph
       [args[:warning]].flatten.each_with_index do |warn, index|
         color = args[:warning_color] || "orange"
         caption = "#{args[:alias]} Warning"
-        data = "threshold(#{warn})"
 
-        field "#{name}_warn_#{index}", {:dashed => true, :data => data, :color => color, :alias => caption}
+        line :caption => "#{name}_warn_#{index}", :value => warn, :color => color, :dashed => true
       end
     end
 
@@ -176,6 +177,24 @@ class GraphiteGraph
 
   alias :forecast :hw_predict
 
+  # draws a simple line on the graph with a caption, value and color.
+  #
+  # line :caption => "warning", :value => 50, :color => "orange"
+  def line(options)
+    raise "lines need a caption" unless options.include?(:caption)
+    raise "lines need a value" unless options.include?(:value)
+    raise "lines need a color" unless options.include?(:color)
+
+    args = {:data => "threshold(#{options[:value]})", :color => options[:color], :alias => options[:caption]}
+
+    args[:dashed] = true if options[:dashed]
+
+    field "line_#{@linecount}", args
+
+    @linecount += 1
+  end
+
+  # adds a field to the graph, each field needs a unique name
   def field(name, args)
     raise "A field called #{name} already exist for this graph" if targets.include?(name)
 
@@ -201,6 +220,8 @@ class GraphiteGraph
 
     url_parts << "areaMode=#{properties[:area]}"
     url_parts << "hideLegend=#{properties[:hide_legend]}"
+    url_parts << "yMin=#{properties[:ymin]}" if properties[:ymin]
+    url_parts << "yMax=#{properties[:ymax]}" if properties[:ymax]
 
     target_order.each do |name|
       target = targets[name]

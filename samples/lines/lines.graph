@@ -1,0 +1,8 @@
+title          "Horizontal Lines"
+width          400
+height         250
+ymin           0
+ymax           125
+
+line :caption => "Critical", :value => 100, :color => "red"
+line :caption => "Warning",  :value =>  50, :color => "orange", :dashed => true
