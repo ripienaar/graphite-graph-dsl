@@ -2,9 +2,10 @@ title          "Male Site Users"
 vtitle         "users"
 width          800
 height         500
-from           "-2days"
+from           "-12hours"
 area           :none
 description    "Male users on the site"
+hide_legend    true
 
-forecast :male, :data => "sumSeries(web*.site.users.male)",
+forecast :male, :data => "sumSeries(*.site.users.male)",
                 :alias => "Male"

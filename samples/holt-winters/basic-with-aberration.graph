@@ -1,0 +1,12 @@
+title          "Male Site Users - Aberration"
+vtitle         "users"
+width          800
+height         500
+from           "-12hours"
+area           :none
+description    "Male users on the site"
+hide_legend    true
+
+forecast :male, :data => "sumSeries(*.site.users.male)",
+                :alias => "Male",
+                :aberration_line => true

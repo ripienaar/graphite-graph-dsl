@@ -4,7 +4,8 @@
 #    height         100
 #    from           "-2days"
 #    area           :none
-#    description
+#    description    "This is a sample graph"
+#    hide_legend    false
 #
 #    field  :foo, :data => "some.data.item",
 #                 :derivative => false,
@@ -54,6 +55,7 @@ class GraphiteGraph
                    :from => "-1hour",
                    :surpress => false,
                    :description => nil,
+                   :hide_legend => nil,
                    :area => :none}.merge(@overrides)
 
   end
@@ -92,7 +94,7 @@ class GraphiteGraph
     @service_mode = false
   end
 
-  # add forecast, bands, aberations and actual fields using the
+  # add forecast, bands, aberrations and actual fields using the
   # Holt-Winters Confidence Band prediction model
   #
   #    hw_predict :foo, :data => "some.data.item", :alias => "Some Item"
@@ -100,12 +102,12 @@ class GraphiteGraph
   # You can tweak the colors by setting:
   #     :forecast_color => "blue"
   #     :bands_color => "grey"
-  #     :aberation_color => "red"
+  #     :aberration_color => "red"
   #
-  # You can add an aberation line:
+  # You can add an aberration line:
   #
-  #     :aberation_line => true,
-  #     :aberation_second_y => true
+  #     :aberration_line => true,
+  #     :aberration_second_y => true
   #
   # You can disable the forecast line by setting:
   #
@@ -115,6 +117,9 @@ class GraphiteGraph
   #
   #     :bands_lines => false
   #
+  # You can disable the display of the actual data:
+  #
+  #     :actual_line => false
   def hw_predict(name, args)
     raise ":data is needed as an argument to a Holt-Winters Confidence forecast" unless args[:data]
 
@@ -135,18 +140,38 @@ class GraphiteGraph
       field "#{name}_bands", bands_args
     end
 
-    if args[:aberation_line]
-      aberation_args = args.clone
-      aberation_args[:data] = "holtWintersAberration(keepLastValue(#{aberation_args[:data]}))"
-      aberation_args[:color] = args[:aberation_color] || "red"
-      aberation_args[:alias] = "#{args[:alias]} Aberation"
-      aberation_args[:second_y_axis] = true if aberation_args[:aberation_second_y]
-      field "#{name}_aberation", aberation_args
+    if args[:aberration_line]
+      aberration_args = args.clone
+      aberration_args[:data] = "holtWintersAberration(keepLastValue(#{aberration_args[:data]}))"
+      aberration_args[:color] = args[:aberration_color] || "orange"
+      aberration_args[:alias] = "#{args[:alias]} Aberation"
+      aberration_args[:second_y_axis] = true if aberration_args[:aberration_second_y]
+      field "#{name}_aberration", aberration_args
+    end
+
+    if args[:critical]
+      [args[:critical]].flatten.each_with_index do |crit, index|
+        color = args[:critical_color] || "red"
+        caption = "#{args[:alias]} Critical"
+        data = "threshold(#{crit})"
+
+        field "#{name}_crit_#{index}", {:dashed => true, :data => data, :color => color, :alias => caption}
+      end
+    end
+
+    if args[:warning]
+      [args[:warning]].flatten.each_with_index do |warn, index|
+        color = args[:warning_color] || "orange"
+        caption = "#{args[:alias]} Warning"
+        data = "threshold(#{warn})"
+
+        field "#{name}_warn_#{index}", {:dashed => true, :data => data, :color => color, :alias => caption}
+      end
     end
 
     args[:color] ||= "yellow"
 
-    field name, args
+    field name, args unless args[:actual_line] == false
   end
 
   alias :forecast :hw_predict
@@ -175,6 +200,7 @@ class GraphiteGraph
     end
 
     url_parts << "areaMode=#{properties[:area]}"
+    url_parts << "hideLegend=#{properties[:hide_legend]}"
 
     target_order.each do |name|
       target = targets[name]
