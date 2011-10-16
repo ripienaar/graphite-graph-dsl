@@ -1,0 +1,10 @@
+# graph settings
+title   "Basic Graph"
+vtitle  "percent"
+area    :stacked
+
+# individual fields
+field :iowait, :scale => 0.001,
+               :color => "red",
+               :alias => "IO Wait",
+               :data  => "sumSeries(derivative(mw*.munin.cpu.iowait))"

@@ -54,6 +54,7 @@ class GraphiteGraph
                    :width => 500,
                    :height => 250,
                    :from => "-1hour",
+                   :unil => "now",
                    :surpress => false,
                    :description => nil,
                    :hide_legend => nil,
@@ -214,8 +215,8 @@ class GraphiteGraph
     url_parts = []
     colors = []
 
-    [:title, :vtitle, :from, :width, :height].each do |item|
-      url_parts << "#{item}=#{properties[item]}"
+    [:title, :vtitle, :from, :width, :height, :until].each do |item|
+      url_parts << "#{item}=#{properties[item]}" if properties[item]
     end
 
     url_parts << "areaMode=#{properties[:area]}"
