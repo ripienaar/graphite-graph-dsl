@@ -1,40 +1,6 @@
-#    title          "this is a title"
-#    vtitle         "v label"
-#    width          100
-#    height         100
-#    from           "-2days"
-#    area           :none
-#    description    "This is a sample graph"
-#    hide_legend    false
-#
-#    field  :foo, :data => "some.data.item",
-#                 :derivative => false,
-#                 :dashed => true,
-#                 :color => "yellow"
-#
-#    service :munin, :cpu do
-#      # this takes <host>.munin.cpu.idle
-#      field :idle, :derivative => true,
-#                   :scale => 0.001,
-#                   :dashed => true,
-#                   :color => "blue"
-#    end
-#
-#    # this is for arbitrary data anywhere
-#    field :deploys, :target => "drawAsInfinite(site.deploys)",
-#                    :color => "red",
-#                    :second_y_axis => true
-#
-# result is an array of graph object with a lot of field hashes and a to_url
-# method that makes the img src url
-#
-# Since graphite 0.9.9 you can create Holt-Winters Forecast graphs using a simple
-# helper:
-#
-#    forecast :foo, :data => "sumSeries(tc*.site.users.male)", :alias => "Male"
-#
-# This creates 3 data fields - 1 the actual data, 1 forecast and the confidence
-# bands, an example can be seen in samples
+# A small DSL to assist in the creation of Graphite graphs
+# see https://github.com/ripienaar/graphite-graph-dsl/wiki
+# for full details
 class GraphiteGraph
   attr_reader :info, :properties, :targets, :target_order
 
@@ -219,8 +185,8 @@ class GraphiteGraph
       url_parts << "#{item}=#{properties[item]}" if properties[item]
     end
 
-    url_parts << "areaMode=#{properties[:area]}"
-    url_parts << "hideLegend=#{properties[:hide_legend]}"
+    url_parts << "areaMode=#{properties[:area]}" if properties[:area]
+    url_parts << "hideLegend=#{properties[:hide_legend]}" if properties.include?(:hide_legend)
     url_parts << "yMin=#{properties[:ymin]}" if properties[:ymin]
     url_parts << "yMax=#{properties[:ymax]}" if properties[:ymax]
 
