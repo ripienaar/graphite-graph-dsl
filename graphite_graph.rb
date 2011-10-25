@@ -20,7 +20,7 @@ class GraphiteGraph
                    :width => 500,
                    :height => 250,
                    :from => "-1hour",
-                   :unil => "now",
+                   :until => "now",
                    :surpress => false,
                    :description => nil,
                    :hide_legend => nil,
