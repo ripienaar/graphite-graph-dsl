@@ -27,6 +27,7 @@ class GraphiteGraph
                    :ymin => nil,
                    :ymax => nil,
                    :linewidth => nil,
+                   :linemode => nil,
                    :fontsize => nil,
                    :fontbold => false,
                    :timezone => nil,
@@ -195,6 +196,7 @@ class GraphiteGraph
     url_parts << "yMin=#{properties[:ymin]}" if properties[:ymin]
     url_parts << "yMax=#{properties[:ymax]}" if properties[:ymax]
     url_parts << "lineWidth=#{properties[:linewidth]}" if properties[:linewidth]
+    url_parts << "lineMode=#{properties[:linemode]}" if properties[:linemode]
     url_parts << "fontSize=#{properties[:fontsize]}" if properties[:fontsize]
     url_parts << "fontBold=#{properties[:fontbold]}" if properties[:fontbold]
     url_parts << "drawNullAsZero=#{properties[:draw_null_as_zero]}" if properties[:draw_null_as_zero]
