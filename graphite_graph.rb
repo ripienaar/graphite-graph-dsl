@@ -1,3 +1,4 @@
+require 'uri'
 # A small DSL to assist in the creation of Graphite graphs
 # see https://github.com/ripienaar/graphite-graph-dsl/wiki
 # for full details
@@ -240,7 +241,7 @@ class GraphiteGraph
     url_parts << "format=#{format}" if format
 
     if url
-      url_parts.join("&")
+       URI.encode(url_parts.join("&"))
     else
       url_parts
     end
