@@ -21,5 +21,5 @@ by a host, it has acceptable threshold for how aberant the data
 may be - if the prediction says the data is too far out of range
 an alert will be raised
 
-    % ruby check_graph.rb --graph monitor.graph --graphite "http://graphite.your.net/render/"
+    % check_graph.rb --graph monitor.graph --graphite "http://graphite.your.net/render/"
     CRITICAL - Down Aberation 1623 > 700
