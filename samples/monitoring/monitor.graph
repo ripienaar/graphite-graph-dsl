@@ -1,7 +1,7 @@
 title          "Load Average"
 hide_legend    true
 
-field :iowait, :data => "keepLastValue(graph.munin.load.load)",
+field :iowait, :data => "keepLastValue(example.munin.load.load)",
                :color => "red",
                :alias => "Load Average"
 
