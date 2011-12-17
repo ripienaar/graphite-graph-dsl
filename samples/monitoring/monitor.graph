@@ -1,14 +1,9 @@
-title          "Devco.Net Down Network"
-vtitle         "bps"
+title          "Load Average"
 hide_legend    true
 
-forecast :down, :data => "keepLastValue(devco_net.munin.if_eth0.down)",
-                :alias => "Down",
-                :aberration_line => true,
-                :forecast_line => false,
-                :bands_lines => false,
-                :actual_line => false,
-                :aberration_color => "blue"
+field :iowait, :data => "keepLastValue(graph.munin.load.load)",
+               :color => "red",
+               :alias => "Load Average"
 
-critical :value => [700, -700], :hide => true
-warning :value => [300, -300], :hide => true
+critical :value => 0.3
+warning :value => 0.1

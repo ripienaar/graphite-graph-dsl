@@ -6,6 +6,7 @@ require 'graphite_graph'
 require 'net/http'
 require 'uri'
 require 'optparse'
+require 'pp'
 
 crits = []
 warns = []
@@ -51,12 +52,26 @@ def check_data(data, min, max)
   fails = []
 
   data.keys.each do |target|
-    if (data[target].min < min)
-      fails << {:target => target, :item => data[target].min, :operator => "<", :expected => min}
-    end
+    if min == max # we got just one value to compare against
+      if min < 0
+        # if the threshold is < 0 we check for values below the threshold but have no way to say that
+        # critical / warning is above -0.5 for example unless you specify a 2 value band
+        if (data[target].min <= min)
+          fails << {:target => target, :item => data[target].min, :operator => "<=", :expected => min}
+        end
+      else
+        if (data[target].max >= max)
+          fails << {:target => target, :item => data[target].max, :operator => ">=", :expected => max}
+        end
+      end
+    else # we have a range of values to compare against and the values must be between
+      if (data[target].min <= min)
+        fails << {:target => target, :item => data[target].min, :operator => "<=", :expected => min}
+      end
 
-    if (data[target].max > max)
-      fails << {:target => target, :item => data[target].max, :operator => ">", :expected => max}
+      if (data[target].max >= max)
+        fails << {:target => target, :item => data[target].max, :operator => ">=", :expected => max}
+      end
     end
   end
 
