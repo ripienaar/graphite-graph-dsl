@@ -130,21 +130,13 @@ class GraphiteGraph
     end
 
     if args[:critical]
-      [args[:critical]].flatten.each_with_index do |crit, index|
-        color = args[:critical_color] || "red"
-        caption = "#{args[:alias]} Critical"
-
-        line :caption => "#{name}_crit_#{index}", :value => crit, :color => color, :dashed => true
-      end
+      color = args[:critical_color] || "red"
+      critical :data => args[:critical], :color => color, :name => name
     end
 
     if args[:warning]
-      [args[:warning]].flatten.each_with_index do |warn, index|
-        color = args[:warning_color] || "orange"
-        caption = "#{args[:alias]} Warning"
-
-        line :caption => "#{name}_warn_#{index}", :value => warn, :color => color, :dashed => true
-      end
+      color = args[:warning_color] || "orange"
+      warning :data => args[:warning], :color => color, :name => name
     end
 
     args[:color] ||= "yellow"
@@ -154,6 +146,38 @@ class GraphiteGraph
 
   alias :forecast :hw_predict
 
+  # draws a single dashed line with predicatable names, defaults to red line
+  #
+  # data can be a single item or a 2 item array, it doesn't break if you supply
+  # more but # more than 2 items just doesn't make sense generally
+  #
+  # critical :data => [700, -700], :color => "red", :name => "crit"
+  def critical(options)
+    raise "critical lines need data" unless options[:data]
+
+    options[:color] ||= "red"
+
+    [options[:data]].flatten.each_with_index do |crit, index|
+      line :caption => "crit_#{index}", :value => crit, :color => options[:color], :dashed => true
+    end
+  end
+
+  # draws a single dashed line with predicatable names, defaults to orange line
+  #
+  # data can be a single item or a 2 item array, it doesn't break if you supply
+  # more but # more than 2 items just doesn't make sense generally
+  #
+  # warning :data => [700, -700], :color => "orange", :name => "warn"
+  def warning(options)
+    raise "warning lines need data" unless options[:data]
+
+    options[:color] ||= "orange"
+
+    [options[:data]].flatten.each_with_index do |warn, index|
+      line :caption => "warn_#{index}", :value => warn, :color => options[:color], :dashed => true
+    end
+  end
+
   # draws a simple line on the graph with a caption, value and color.
   #
   # line :caption => "warning", :value => 50, :color => "orange"
@@ -162,7 +186,9 @@ class GraphiteGraph
     raise "lines need a value" unless options.include?(:value)
     raise "lines need a color" unless options.include?(:color)
 
-    args = {:data => "threshold(#{options[:value]})", :color => options[:color], :alias => options[:caption]}
+    options[:alias] = options[:caption] unless options[:alias]
+
+    args = {:data => "threshold(#{options[:value]})", :color => options[:color], :alias => options[:alias]}
 
     args[:dashed] = true if options[:dashed]
 
