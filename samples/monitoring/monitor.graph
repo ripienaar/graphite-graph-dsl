@@ -1,0 +1,14 @@
+title          "Devco.Net Down Network"
+vtitle         "bps"
+hide_legend    true
+
+forecast :down, :data => "keepLastValue(devco_net.munin.if_eth0.down)",
+                :alias => "Down",
+                :aberration_line => true,
+                :forecast_line => false,
+                :bands_lines => false,
+                :actual_line => false,
+                :critical => [700, -700],
+                :warning => [300, -300],
+                :aberration_color => "blue"
+
