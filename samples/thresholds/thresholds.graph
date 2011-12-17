@@ -1,0 +1,10 @@
+title          "Threshold Lines"
+width          400
+height         250
+ymin           -130
+ymax           130
+hide_legend    true
+
+warning :value =>  [50, -50], :color => "orange"
+critical :value => [100, -100], :color => "red"
+
