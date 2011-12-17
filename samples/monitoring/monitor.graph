@@ -8,7 +8,7 @@ forecast :down, :data => "keepLastValue(devco_net.munin.if_eth0.down)",
                 :forecast_line => false,
                 :bands_lines => false,
                 :actual_line => false,
-                :critical => [700, -700],
-                :warning => [300, -300],
                 :aberration_color => "blue"
 
+critical :value => [700, -700], :hide => true
+warning :value => [300, -300], :hide => true

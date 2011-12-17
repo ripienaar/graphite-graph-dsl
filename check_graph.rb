@@ -24,6 +24,14 @@ opt.on("--graph [GRAPH]", "Graph defintition") do |v|
   graph = v
 end
 
+opt.on("--warning [WARN]", "Warning threshold, can be specified multiple times") do |v|
+  warns << Float(v)
+end
+
+opt.on("--critical [CRITICAL]", "Critical threshold, can be specified multiple times") do |v|
+  crits << Float(v)
+end
+
 opt.on("--check [NUM]", Integer, "Number of past data items to check") do |v|
   check_number = v
 end
@@ -66,9 +74,9 @@ def print_and_exit(results, code)
 end
 
 
-GraphiteGraph.new(graph).url(:json)
+graphite = GraphiteGraph.new(graph)
 
-uri = URI.parse("%s?%s" % [ url, GraphiteGraph.new(graph).url(:json) ])
+uri = URI.parse("%s?%s" % [ url, graphite.url(:json) ])
 
 json = Net::HTTP.get_response(uri)
 
@@ -77,14 +85,13 @@ status_exit("UNKNOWN - Could not request graph data for HTTP code #{json.code}",
 data = JSON.load(json.body)
 
 data.each do |d|
-  if d["target"] =~ /crit_[01]$/
-    crits << d["datapoints"].first.first
-  elsif d["target"] =~ /warn_[01]$/
-    warns << d["datapoints"].first.first
-  else
+  unless d["target"] =~ /(warn|crit)_[01]$/
     check_data[ d["target"] ] = d["datapoints"].last(check_number).map{|i| i.first}
   end
 end
+
+crits = graphite.critical_threshold if crits.empty? and graphite.critical_threshold
+warns = graphite.warning_threshold if warns.empty? and graphite.warning_threshold
 
 if crits.empty? || warns.empty? || check_data.empty?
   status_exit "UNKNOWN: Graph does not have Data, Warning and Critical information", 3

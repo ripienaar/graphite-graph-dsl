@@ -12,14 +12,16 @@ warning and critical levels.
 			:forecast_line => false,
 			:bands_lines => false,
 			:actual_line => false,
-			:critical => [700, -700],
-			:warning => [300, -300],
 			:aberration_color => "blue"
 
+	# record the thresholds but do not draw them
+        critical :value => [700, -700], :hide => true
+        warning :value => [300, -300], :hide => true
+
 This is a Holt Winters prediction graph of network data received
-by a host, it has acceptable threshold for how aberant the data
+by a host, it has acceptable threshold for how aberrant the data
 may be - if the prediction says the data is too far out of range
-an alert will be raised
+an alert will be raised.
 
     % ruby check_graph.rb --graph monitor.graph --graphite "http://graphite.your.net/render/"
-    CRITICAL - Down Aberation 1623 > 700
+    CRITICAL - Down Aberration 1623 > 700
