@@ -131,12 +131,12 @@ class GraphiteGraph
 
     if args[:critical]
       color = args[:critical_color] || "red"
-      critical :data => args[:critical], :color => color, :name => name
+      critical :value => args[:critical], :color => color, :name => name
     end
 
     if args[:warning]
       color = args[:warning_color] || "orange"
-      warning :data => args[:warning], :color => color, :name => name
+      warning :value => args[:warning], :color => color, :name => name
     end
 
     args[:color] ||= "yellow"
@@ -151,13 +151,13 @@ class GraphiteGraph
   # data can be a single item or a 2 item array, it doesn't break if you supply
   # more but # more than 2 items just doesn't make sense generally
   #
-  # critical :data => [700, -700], :color => "red", :name => "crit"
+  # critical :value => [700, -700], :color => "red"
   def critical(options)
-    raise "critical lines need data" unless options[:data]
+    raise "critical lines need a value" unless options[:value]
 
     options[:color] ||= "red"
 
-    [options[:data]].flatten.each_with_index do |crit, index|
+    [options[:value]].flatten.each_with_index do |crit, index|
       line :caption => "crit_#{index}", :value => crit, :color => options[:color], :dashed => true
     end
   end
@@ -167,13 +167,13 @@ class GraphiteGraph
   # data can be a single item or a 2 item array, it doesn't break if you supply
   # more but # more than 2 items just doesn't make sense generally
   #
-  # warning :data => [700, -700], :color => "orange", :name => "warn"
+  # warning :value => [700, -700], :color => "orange"
   def warning(options)
-    raise "warning lines need data" unless options[:data]
+    raise "warning lines need a value" unless options[:value]
 
     options[:color] ||= "orange"
 
-    [options[:data]].flatten.each_with_index do |warn, index|
+    [options[:value]].flatten.each_with_index do |warn, index|
       line :caption => "warn_#{index}", :value => warn, :color => options[:color], :dashed => true
     end
   end
