@@ -1,0 +1,9 @@
+title       "CollectD - Read IOPS"
+vtitle      "iops"
+description "CollectD Total IOPS by Disk"
+from        "-4hour"
+linemode    "staircase"
+
+group :iops, :data  => 'collectd.*.disk.sd*1.disk_ops.read',
+             :subgroup => 3,
+             :aggregator => "sumSeries"
