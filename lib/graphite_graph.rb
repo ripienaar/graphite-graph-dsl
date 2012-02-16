@@ -1,4 +1,5 @@
 require 'uri'
+require "graphite_graph/version"
 # A small DSL to assist in the creation of Graphite graphs
 # see https://github.com/ripienaar/graphite-graph-dsl/wiki
 # for full details
