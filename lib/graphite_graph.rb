@@ -37,6 +37,8 @@ class GraphiteGraph
                    :fontsize => nil,
                    :fontbold => false,
                    :timezone => nil,
+                   :background_color => nil,
+                   :foreground_color => nil,
                    :draw_null_as_zero => false,
                    :major_grid_line_color => nil,
                    :minor_grid_line_color => nil,
@@ -270,6 +272,8 @@ class GraphiteGraph
     url_parts << "tz=#{properties[:timezone]}" if properties[:timezone]
     url_parts << "majorGridLineColor=#{properties[:major_grid_line_color]}" if properties[:major_grid_line_color]
     url_parts << "minorGridLineColor=#{properties[:minor_grid_line_color]}" if properties[:minor_grid_line_color]
+    url_parts << "bgcolor=#{properties[:background_color]}" if properties[:background_color]
+    url_parts << "fgcolor=#{properties[:foreground_color]}" if properties[:foreground_color]
 
     target_order.each do |name|
       target = targets[name]
