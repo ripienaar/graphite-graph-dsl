@@ -42,7 +42,8 @@ class GraphiteGraph
                    :draw_null_as_zero => false,
                    :major_grid_line_color => nil,
                    :minor_grid_line_color => nil,
-                   :area => :none}.merge(@overrides)
+                   :area => :none,
+                   :placeholders => nil}.merge(@overrides)
   end
 
   def [](key)
@@ -309,7 +310,10 @@ class GraphiteGraph
     url_parts << "format=#{format}" if format
 
     if url
-       URI.encode(url_parts.join("&"))
+      url_str = url_parts.join("&")
+      properties[:placeholders].each { |k,v| url_str.gsub!("%{#{k}}", v.to_s) } if properties[:placeholders].is_a?(Hash)
+
+      URI.encode(url_str)
     else
       url_parts
     end
