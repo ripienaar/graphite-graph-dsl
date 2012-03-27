@@ -287,6 +287,7 @@ class GraphiteGraph
         graphite_target = target[:data]
 
         graphite_target = "derivative(#{graphite_target})" if target[:derivative]
+        graphite_target = "highestAverage(#{graphite_target},#{target[:highest_average]})" if target[:highest_average]
         graphite_target = "scale(#{graphite_target},#{target[:scale]})" if target[:scale]
         graphite_target = "drawAsInfinite(#{graphite_target})" if target[:line]
         graphite_target = "movingAverage(#{graphite_target},#{target[:smoothing]})" if target[:smoothing]
@@ -296,14 +297,18 @@ class GraphiteGraph
         graphite_target = "secondYAxis(#{graphite_target})" if target[:second_y_axis]
 
         unless target.include?(:subgroup)
-          if target[:alias]
+          if target[:alias_by_node]
+            graphite_target = "aliasByNode(#{graphite_target},#{target[:alias_by_node]})"
+          elsif target[:alias]
             graphite_target = "alias(#{graphite_target},\"#{target[:alias]}\")"
           else
             graphite_target = "alias(#{graphite_target},\"#{name.to_s.capitalize}\")"
           end
 
           if target[:cacti_style]
-            graphite_target = "cactiStyle(#{graphite_target}"
+            graphite_target = "cactiStyle(#{graphite_target})"
+          elsif
+            graphite_target = "legendValue(#{graphite_target},\"#{target[:legend_value]}\")" if target[:legend_value]
           end
         end
 
