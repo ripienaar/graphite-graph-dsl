@@ -301,6 +301,9 @@ class GraphiteGraph
           else
             graphite_target = "alias(#{graphite_target},\"#{name.to_s.capitalize}\")"
           end
+          if target[:cactiStyle]
+            graphite_target = "cactiStyle(#{graphite_target}"
+          end
         end
 
         url_parts << "target=#{graphite_target}"
