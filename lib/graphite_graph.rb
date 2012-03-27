@@ -303,7 +303,7 @@ class GraphiteGraph
           end
 
           if target[:cacti_style]
-            graphite_target = "cactiStyle(#{graphite_target}"
+            graphite_target = "cactiStyle(#{graphite_target})"
           end
         end
 
