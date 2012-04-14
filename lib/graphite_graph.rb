@@ -307,8 +307,8 @@ class GraphiteGraph
 
           if target[:cacti_style]
             graphite_target = "cactiStyle(#{graphite_target})"
-          elsif
-            graphite_target = "legendValue(#{graphite_target},\"#{target[:legend_value]}\")" if target[:legend_value]
+          elsif target[:legend_value]
+            graphite_target = "legendValue(#{graphite_target},\"#{target[:legend_value]}\")"
           end
         end
 
