@@ -301,6 +301,8 @@ class GraphiteGraph
             graphite_target = "aliasByNode(#{graphite_target},#{target[:alias_by_node]})"
           elsif target[:alias]
             graphite_target = "alias(#{graphite_target},\"#{target[:alias]}\")"
+          elsif target[:no_alias]
+            graphite_target = graphite_target # no-op
           else
             graphite_target = "alias(#{graphite_target},\"#{name.to_s.capitalize}\")"
           end
