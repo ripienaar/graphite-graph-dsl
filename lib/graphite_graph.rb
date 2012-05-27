@@ -326,7 +326,7 @@ class GraphiteGraph
       url_str = url_parts.join("&")
       properties[:placeholders].each { |k,v| url_str.gsub!("%{#{k}}", v.to_s) } if properties[:placeholders].is_a?(Hash)
 
-      URI.encode(url_str)
+      URI.encode(url_str, Regexp.union(URI::REGEXP::UNSAFE, /[+]/))
     else
       url_parts
     end
