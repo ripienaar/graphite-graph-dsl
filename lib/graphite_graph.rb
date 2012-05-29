@@ -261,7 +261,7 @@ class GraphiteGraph
     end
 
     url_parts << "areaMode=#{properties[:area]}" if properties[:area]
-    url_parts << "hideLegend=#{properties[:hide_legend]}" if properties.include?(:hide_legend)
+    url_parts << "hideLegend=#{properties[:hide_legend]}" unless properties[:hide_legend].nil?
     url_parts << "hideGrid=#{properties[:hide_grid]}" if properties[:hide_grid]
     url_parts << "yMin=#{properties[:ymin]}" if properties[:ymin]
     url_parts << "yMax=#{properties[:ymax]}" if properties[:ymax]
