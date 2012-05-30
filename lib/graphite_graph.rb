@@ -36,6 +36,7 @@ class GraphiteGraph
                    :linemode => nil,
                    :fontsize => nil,
                    :fontbold => false,
+                   :fontname => nil,
                    :timezone => nil,
                    :background_color => nil,
                    :foreground_color => nil,
@@ -269,6 +270,7 @@ class GraphiteGraph
     url_parts << "lineMode=#{properties[:linemode]}" if properties[:linemode]
     url_parts << "fontSize=#{properties[:fontsize]}" if properties[:fontsize]
     url_parts << "fontBold=#{properties[:fontbold]}" if properties[:fontbold]
+    url_parts << "fontName=#{properties[:fontname]}" if properties[:fontname]
     url_parts << "drawNullAsZero=#{properties[:draw_null_as_zero]}" if properties[:draw_null_as_zero]
     url_parts << "tz=#{properties[:timezone]}" if properties[:timezone]
     url_parts << "majorGridLineColor=#{properties[:major_grid_line_color]}" if properties[:major_grid_line_color]
