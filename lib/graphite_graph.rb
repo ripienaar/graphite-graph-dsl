@@ -295,6 +295,7 @@ class GraphiteGraph
         elsif target[:scale_to_seconds]
           graphite_target = "scaleToSeconds(#{graphite_target},#{target[:scale_to_seconds]})"
         end
+        graphite_target = "asPercent(#{graphite_target})" if target[:as_percent]
         graphite_target = "drawAsInfinite(#{graphite_target})" if target[:line]
         graphite_target = "movingAverage(#{graphite_target},#{target[:smoothing]})" if target[:smoothing]
 
