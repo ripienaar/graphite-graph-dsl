@@ -290,7 +290,11 @@ class GraphiteGraph
 
         graphite_target = "derivative(#{graphite_target})" if target[:derivative]
         graphite_target = "highestAverage(#{graphite_target},#{target[:highest_average]})" if target[:highest_average]
-        graphite_target = "scale(#{graphite_target},#{target[:scale]})" if target[:scale]
+        if target[:scale]
+          graphite_target = "scale(#{graphite_target},#{target[:scale]})"
+        elsif target[:scale_to_seconds]
+          graphite_target = "scaleToSeconds(#{graphite_target},#{target[:scale_to_seconds]})"
+        end
         graphite_target = "drawAsInfinite(#{graphite_target})" if target[:line]
         graphite_target = "movingAverage(#{graphite_target},#{target[:smoothing]})" if target[:smoothing]
 
