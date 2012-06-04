@@ -32,10 +32,12 @@ class GraphiteGraph
                    :hide_grid => nil,
                    :ymin => nil,
                    :ymax => nil,
+                   :yunit_system => nil,
                    :linewidth => nil,
                    :linemode => nil,
                    :fontsize => nil,
                    :fontbold => false,
+                   :fontname => nil,
                    :timezone => nil,
                    :background_color => nil,
                    :foreground_color => nil,
@@ -265,10 +267,12 @@ class GraphiteGraph
     url_parts << "hideGrid=#{properties[:hide_grid]}" if properties[:hide_grid]
     url_parts << "yMin=#{properties[:ymin]}" if properties[:ymin]
     url_parts << "yMax=#{properties[:ymax]}" if properties[:ymax]
+    url_parts << "yUnitSystem=#{properties[:yunit_system]}" if properties[:yunit_system]
     url_parts << "lineWidth=#{properties[:linewidth]}" if properties[:linewidth]
     url_parts << "lineMode=#{properties[:linemode]}" if properties[:linemode]
     url_parts << "fontSize=#{properties[:fontsize]}" if properties[:fontsize]
     url_parts << "fontBold=#{properties[:fontbold]}" if properties[:fontbold]
+    url_parts << "fontName=#{properties[:fontname]}" if properties[:fontname]
     url_parts << "drawNullAsZero=#{properties[:draw_null_as_zero]}" if properties[:draw_null_as_zero]
     url_parts << "tz=#{properties[:timezone]}" if properties[:timezone]
     url_parts << "majorGridLineColor=#{properties[:major_grid_line_color]}" if properties[:major_grid_line_color]
@@ -288,7 +292,16 @@ class GraphiteGraph
 
         graphite_target = "derivative(#{graphite_target})" if target[:derivative]
         graphite_target = "highestAverage(#{graphite_target},#{target[:highest_average]})" if target[:highest_average]
-        graphite_target = "scale(#{graphite_target},#{target[:scale]})" if target[:scale]
+        if target[:scale]
+          graphite_target = "scale(#{graphite_target},#{target[:scale]})"
+        elsif target[:scale_to_seconds]
+          graphite_target = "scaleToSeconds(#{graphite_target},#{target[:scale_to_seconds]})"
+        end
+        if target[:as_percent] == true
+          graphite_target = "asPercent(#{graphite_target})"
+        elsif target[:as_percent]
+          graphite_target = "asPercent(#{graphite_target},#{target[:as_percent]})"
+        end
         graphite_target = "drawAsInfinite(#{graphite_target})" if target[:line]
         graphite_target = "movingAverage(#{graphite_target},#{target[:smoothing]})" if target[:smoothing]
 
@@ -299,6 +312,8 @@ class GraphiteGraph
         unless target.include?(:subgroup)
           if target[:alias_by_node]
             graphite_target = "aliasByNode(#{graphite_target},#{target[:alias_by_node]})"
+          elsif target[:alias_sub_search]
+            graphite_target = "aliasSub(#{graphite_target},\"#{target[:alias_sub_search]}\",\"#{target[:alias_sub_replace]}\")"
           elsif target[:alias]
             graphite_target = "alias(#{graphite_target},\"#{target[:alias]}\")"
           elsif target[:no_alias]
@@ -324,7 +339,7 @@ class GraphiteGraph
       url_str = url_parts.join("&")
       properties[:placeholders].each { |k,v| url_str.gsub!("%{#{k}}", v.to_s) } if properties[:placeholders].is_a?(Hash)
 
-      URI.encode(url_str)
+      URI.encode(url_str, Regexp.union(URI::REGEXP::UNSAFE, /[+]/))
     else
       url_parts
     end
