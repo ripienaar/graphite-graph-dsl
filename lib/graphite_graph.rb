@@ -339,10 +339,10 @@ class GraphiteGraph
     url_parts << "format=#{format}" if format
 
     if url
-      url_str = url_parts.join("&")
+      url_str = url_parts.map { |pair| k,v = pair.split('='); "#{k}=#{CGI.escape(v)}" }.join("&")
       properties[:placeholders].each { |k,v| url_str.gsub!("%{#{k}}", v.to_s) } if properties[:placeholders].is_a?(Hash)
 
-      CGI.escape(url_str)
+      url_str
     else
       url_parts
     end
