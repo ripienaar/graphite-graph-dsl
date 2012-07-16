@@ -1,4 +1,5 @@
 require 'uri'
+require 'cgi'
 require "graphite_graph/version"
 # A small DSL to assist in the creation of Graphite graphs
 # see https://github.com/ripienaar/graphite-graph-dsl/wiki
@@ -339,7 +340,7 @@ class GraphiteGraph
       url_str = url_parts.join("&")
       properties[:placeholders].each { |k,v| url_str.gsub!("%{#{k}}", v.to_s) } if properties[:placeholders].is_a?(Hash)
 
-      URI.encode(url_str, Regexp.union(URI::REGEXP::UNSAFE, /[+]/))
+      CGI.escape(url_str)
     else
       url_parts
     end
