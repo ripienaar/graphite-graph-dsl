@@ -47,7 +47,7 @@ class GraphiteGraph
                    :major_grid_line_color => nil,
                    :minor_grid_line_color => nil,
                    :area => :none,
-		   :logbase => nil,
+                   :logbase => nil,
                    :placeholders => nil}.merge(@overrides)
   end
 
