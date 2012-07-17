@@ -47,6 +47,7 @@ class GraphiteGraph
                    :major_grid_line_color => nil,
                    :minor_grid_line_color => nil,
                    :area => :none,
+		   :logbase => nil,
                    :placeholders => nil}.merge(@overrides)
   end
 
@@ -282,6 +283,7 @@ class GraphiteGraph
     url_parts << "minorGridLineColor=#{properties[:minor_grid_line_color]}" if properties[:minor_grid_line_color]
     url_parts << "bgcolor=#{properties[:background_color]}" if properties[:background_color]
     url_parts << "fgcolor=#{properties[:foreground_color]}" if properties[:foreground_color]
+    url_parts << "logBase=#{properties[:logbase]}" if properties[:logbase]
 
     target_order.each do |name|
       target = targets[name]
