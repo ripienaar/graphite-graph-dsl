@@ -23,6 +23,7 @@ class GraphiteGraph
   def defaults
     @properties = {:title => nil,
                    :vtitle => nil,
+                   :vtitle_right => nil,
                    :width => 500,
                    :height => 250,
                    :from => "-1hour",
@@ -282,6 +283,7 @@ class GraphiteGraph
     url_parts << "minorGridLineColor=#{properties[:minor_grid_line_color]}" if properties[:minor_grid_line_color]
     url_parts << "bgcolor=#{properties[:background_color]}" if properties[:background_color]
     url_parts << "fgcolor=#{properties[:foreground_color]}" if properties[:foreground_color]
+    url_parts << "vtitleRight=#{properties[:vtitle_right]}" if properties[:vtitle_right]
 
     target_order.each do |name|
       target = targets[name]
