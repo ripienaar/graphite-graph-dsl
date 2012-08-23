@@ -297,7 +297,13 @@ class GraphiteGraph
 
         graphite_target = target[:data]
 
-        graphite_target = "derivative(#{graphite_target})" if target[:derivative]
+        graphite_target = "keepLastValue(#{graphite_target})" if target[:keep_last_value]
+        graphite_target = "sum(#{graphite_target})" if target[:sum]
+        if target[:derivative]
+          graphite_target = "derivative(#{graphite_target})"
+        elsif target[:non_negative_derivative]
+          graphite_target = "nonNegativeDerivative(#{graphite_target})"
+        end
         graphite_target = "highestAverage(#{graphite_target},#{target[:highest_average]})" if target[:highest_average]
         if target[:scale]
           graphite_target = "scale(#{graphite_target},#{target[:scale]})"
