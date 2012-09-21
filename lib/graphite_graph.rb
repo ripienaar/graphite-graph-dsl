@@ -236,6 +236,7 @@ class GraphiteGraph
     args = {:data => "threshold(#{options[:value]})", :color => options[:color], :alias => options[:alias]}
 
     args[:dashed] = true if options[:dashed]
+    args[:second_y_axis] = true if options[:second_y_axis]
 
     field "line_#{@linecount}", args
 
