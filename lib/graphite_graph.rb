@@ -33,7 +33,9 @@ class GraphiteGraph
                    :hide_legend => nil,
                    :hide_grid => nil,
                    :ymin => nil,
+                   :yminright => nil,
                    :ymax => nil,
+                   :ymaxright => nil,
                    :yunit_system => nil,
                    :linewidth => nil,
                    :linemode => nil,
@@ -271,7 +273,9 @@ class GraphiteGraph
     url_parts << "hideLegend=#{properties[:hide_legend]}" unless properties[:hide_legend].nil?
     url_parts << "hideGrid=#{properties[:hide_grid]}" if properties[:hide_grid]
     url_parts << "yMin=#{properties[:ymin]}" if properties[:ymin]
+    url_parts << "yMinRight=#{properties[:yminright]}" if properties[:yminright]
     url_parts << "yMax=#{properties[:ymax]}" if properties[:ymax]
+    url_parts << "yMaxRight=#{properties[:ymaxright]}" if properties[:ymaxright]
     url_parts << "yUnitSystem=#{properties[:yunit_system]}" if properties[:yunit_system]
     url_parts << "lineWidth=#{properties[:linewidth]}" if properties[:linewidth]
     url_parts << "lineMode=#{properties[:linemode]}" if properties[:linemode]
