@@ -1,5 +1,5 @@
-require 'uri'
-require 'cgi'
+require 'typhoeus'
+require 'yajl'
 # A small DSL to assist in the creation of Graphite graphs
 # see https://github.com/ripienaar/graphite-graph-dsl/wiki
 # for full details
