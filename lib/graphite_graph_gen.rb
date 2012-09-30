@@ -15,6 +15,7 @@ class GraphiteGraphGenerator
     @properties = {}
     @general_text = ""
     
+    clean_old_generated_graphs
     load_graph_gen
     generate_graph_definitions
   end
@@ -43,6 +44,10 @@ class GraphiteGraphGenerator
       @general_text << ",\n#{args[1].to_s[1..-2]}\n"
     end
     @general_text << "\n\n"
+  end
+
+  def clean_old_generated_graphs
+    Dir.entries(@graphs_dir).select{|f| fn = File.join(@graphs_dir, f); File.delete(fn) if f.match(/gen.*\.graph$/)}
   end
 
   def generate_graph_definitions
