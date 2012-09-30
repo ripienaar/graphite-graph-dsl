@@ -52,10 +52,15 @@ class GraphiteGraphGenerator
 
   def generate_graph_definitions
     metric_branches.each do |branch|
-      graph_name = branch.scan(@naming_pattern)[0][0]
+      graph_name = extract_graph_name(branch)
       graph_file_name = "gen_#{graph_name}.graph"
       File.open(File.join(@graphs_dir, graph_file_name), 'w') {|f| f.write(graph_file_content(graph_name, branch)) }
     end
+  end
+
+  def extract_graph_name(branch)
+    name_match = branch.match(@naming_pattern)
+    name_match ? name_match[1] : branch
   end
 
   def metric_branches
@@ -69,13 +74,18 @@ class GraphiteGraphGenerator
     graph_title = graph_name.gsub('_', ' ').gsub(' - ', ' ').gsub('.', ' - ').gsub('  ', ' ')      
     graph_file_content = "title \"#{graph_title}\"\n\n" << @general_text      
     @stats.uniq.each do |stat|
-      full_metric = [branch, stat].join('.')
-      graph_file_content << "field :#{stat},\n" << ":data => \"#{full_metric}\""
+      graph_file_content << "field :#{stat},\n" << ":data => \"#{full_metric(branch, stat)}\""
       if @properties.length > 0
         graph_file_content << ",\n#{@properties.to_s[1..-2]}\n"
       end
       graph_file_content << "\n\n"
     end
     graph_file_content
-  end  
+  end
+  
+  def full_metric(branch, stat)
+    full_metric = [branch, stat].join('.')
+    full_metric = @target_wrapper % full_metric if @target_wrapper 
+    full_metric
+  end
 end
