@@ -39,7 +39,8 @@ class GraphiteGraphGenerator
   end
 
   def method_missing(method, *args)
-    @general_text << "#{method} :#{args[0]}"
+    @general_text << "#{method} "
+    @general_text << ( args[0].is_a?(Symbol) ? ":#{args[0]}" : "\"#{args[0]}\"" )
     if args.length > 1
       @general_text << ",\n#{args[1].to_s[1..-2]}\n"
     end
