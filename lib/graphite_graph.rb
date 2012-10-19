@@ -51,7 +51,8 @@ class GraphiteGraph
                    :minor_grid_line_color => nil,
                    :area => :none,
                    :logbase => nil,
-                   :placeholders => nil}.merge(@overrides)
+                   :placeholders => nil,
+                   :area_alpha => nil}.merge(@overrides)
   end
 
   def [](key)
@@ -291,6 +292,7 @@ class GraphiteGraph
     url_parts << "fgcolor=#{properties[:foreground_color]}" if properties[:foreground_color]
     url_parts << "vtitleRight=#{properties[:vtitle_right]}" if properties[:vtitle_right]
     url_parts << "logBase=#{properties[:logbase]}" if properties[:logbase]
+    url_parts << "areaAlpha=#{properties[:area_alpha]}" if properties[:area_alpha]
 
     target_order.each do |name|
       target = targets[name]
