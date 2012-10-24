@@ -51,6 +51,7 @@ class GraphiteGraph
                    :minor_grid_line_color => nil,
                    :area => :none,
                    :logbase => nil,
+                   :area_alpha => nil,
                    :placeholders => nil}.merge(@overrides)
   end
 
@@ -270,6 +271,7 @@ class GraphiteGraph
     end
 
     url_parts << "areaMode=#{properties[:area]}" if properties[:area]
+    url_parts << "areaAlpha=#{properties[:area_alpha]}" if properties[:area_alpha]
     url_parts << "hideLegend=#{properties[:hide_legend]}" unless properties[:hide_legend].nil?
     url_parts << "hideGrid=#{properties[:hide_grid]}" if properties[:hide_grid]
     url_parts << "yMin=#{properties[:ymin]}" if properties[:ymin]
