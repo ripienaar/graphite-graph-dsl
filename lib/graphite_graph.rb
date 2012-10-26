@@ -301,7 +301,8 @@ class GraphiteGraph
         raise "field #{name} does not have any data associated with it" unless target[:data]
 
         graphite_target = target[:data]
-
+       
+        graphite_target = "lineWidth(#{graphite_target},#{target[:t_linewidth]})" if target[:t_linewidth]
         graphite_target = "keepLastValue(#{graphite_target})" if target[:keep_last_value]
         graphite_target = "sum(#{graphite_target})" if target[:sum]
         if target[:derivative]
