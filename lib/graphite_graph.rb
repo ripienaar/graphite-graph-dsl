@@ -52,6 +52,7 @@ class GraphiteGraph
                    :area => :none,
                    :logbase => nil,
                    :area_alpha => nil,
+                   :graph_type => nil,
                    :placeholders => nil}.merge(@overrides)
   end
 
@@ -293,6 +294,7 @@ class GraphiteGraph
     url_parts << "fgcolor=#{properties[:foreground_color]}" if properties[:foreground_color]
     url_parts << "vtitleRight=#{properties[:vtitle_right]}" if properties[:vtitle_right]
     url_parts << "logBase=#{properties[:logbase]}" if properties[:logbase]
+    url_parts <<  "graphType=#{properties[:graph_type]}" if properties[:graph_type]
 
     target_order.each do |name|
       target = targets[name]
@@ -303,7 +305,7 @@ class GraphiteGraph
         raise "field #{name} does not have any data associated with it" unless target[:data]
 
         graphite_target = target[:data]
-       
+
         graphite_target = "lineWidth(#{graphite_target},#{target[:field_linewidth]})" if target[:field_linewidth]
         graphite_target = "keepLastValue(#{graphite_target})" if target[:keep_last_value]
         graphite_target = "sum(#{graphite_target})" if target[:sum]
