@@ -357,8 +357,8 @@ class GraphiteGraph
     url_parts << "format=#{format}" if format
 
     if url
+      properties[:placeholders].each { |k,v| url_parts.each {|part| part.gsub!("%{#{k}}", v.to_s) } } if properties[:placeholders].is_a?(Hash)
       url_str = url_parts.map { |pair| k,v = pair.split('='); "#{k}=#{CGI.escape(v)}" }.join("&")
-      properties[:placeholders].each { |k,v| url_str.gsub!("%{#{k}}", v.to_s) } if properties[:placeholders].is_a?(Hash)
 
       url_str
     else
