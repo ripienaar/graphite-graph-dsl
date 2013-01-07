@@ -264,7 +264,6 @@ class GraphiteGraph
     return nil if properties[:surpress]
 
     url_parts = []
-    colors = []
 
     [:title, :vtitle, :from, :width, :height, :until].each do |item|
       url_parts << "#{item}=#{properties[item]}" if properties[item]
