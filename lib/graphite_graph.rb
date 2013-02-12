@@ -292,6 +292,7 @@ class GraphiteGraph
     url_parts << "vtitleRight=#{properties[:vtitle_right]}" if properties[:vtitle_right]
     url_parts << "logBase=#{properties[:logbase]}" if properties[:logbase]
     url_parts << "areaAlpha=#{properties[:area_alpha]}" if properties[:area_alpha]
+    url_parts << "minXStep=#{properties[:min_x_step]}" if properties[:min_x_step]
 
     target_order.each do |name|
       target = targets[name]
