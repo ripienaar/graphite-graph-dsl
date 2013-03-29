@@ -52,7 +52,8 @@ class GraphiteGraph
                    :area => :none,
                    :logbase => nil,
                    :placeholders => nil,
-                   :area_alpha => nil}.merge(@overrides)
+                   :area_alpha => nil,
+                   :unique_legend => nil}.merge(@overrides)
   end
 
   def [](key)
@@ -293,6 +294,7 @@ class GraphiteGraph
     url_parts << "logBase=#{properties[:logbase]}" if properties[:logbase]
     url_parts << "areaAlpha=#{properties[:area_alpha]}" if properties[:area_alpha]
     url_parts << "minXStep=#{properties[:min_x_step]}" if properties[:min_x_step]
+    url_parts << "uniqueLegend=#{properties[:unique_legend]}" if properties[:unique_legend]
 
     target_order.each do |name|
       target = targets[name]
