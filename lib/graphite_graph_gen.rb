@@ -14,7 +14,7 @@ class GraphiteGraphGenerator
     @stats = []
     @properties = {}
     @general_text = ""
-    
+  
     clean_old_generated_graphs
     load_graph_gen
     generate_graph_definitions
@@ -68,7 +68,7 @@ class GraphiteGraphGenerator
     response = Typhoeus::Request.get(@graphite_metrics_url)
     raise "Error fetching #{@graphite_metrics_url}. #{response.inspect}" unless response.success?
     json = Yajl::Parser.parse(response.body) 
-    branches = json.join.scan(@context).uniq.map { |branch| branch[0] }
+    branches = json.join('|').scan(@context).uniq.map { |branch| branch[0] }
   end
 
   def graph_file_content(graph_name, branch)
