@@ -26,6 +26,7 @@ class GraphiteGraph
                    :vtitle_right => nil,
                    :width => 500,
                    :height => 250,
+                   :graphtype => nil,
                    :from => "-1hour",
                    :until => "now",
                    :surpress => false,
@@ -292,6 +293,7 @@ class GraphiteGraph
     url_parts << "xFormat=#{properties[:xformat]}" if properties[:xformat]
     url_parts << "majorGridLineColor=#{properties[:major_grid_line_color]}" if properties[:major_grid_line_color]
     url_parts << "minorGridLineColor=#{properties[:minor_grid_line_color]}" if properties[:minor_grid_line_color]
+    url_parts << "graphType=#{properties[:graphtype]}" if properties[:graphtype]
     url_parts << "bgcolor=#{properties[:background_color]}" if properties[:background_color]
     url_parts << "fgcolor=#{properties[:foreground_color]}" if properties[:foreground_color]
     url_parts << "vtitleRight=#{properties[:vtitle_right]}" if properties[:vtitle_right]
