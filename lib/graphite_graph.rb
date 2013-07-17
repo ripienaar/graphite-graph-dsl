@@ -270,6 +270,9 @@ class GraphiteGraph
 
     url_parts = []
 
+    dual_axis = false
+    targets.each_value { |v| dual_axis = true if v.include?(:second_y_axis) }
+
     [:title, :vtitle, :from, :width, :height, :until].each do |item|
       url_parts << "#{item}=#{properties[item]}" if properties[item]
     end
@@ -279,9 +282,14 @@ class GraphiteGraph
     url_parts << "hideLegend=#{properties[:hide_legend]}" unless properties[:hide_legend].nil?
     url_parts << "hideGrid=#{properties[:hide_grid]}" if properties[:hide_grid]
     url_parts << "hideYAxis=#{properties[:hide_y_axis]}" if properties[:hide_y_axis]
-    url_parts << "yMin=#{properties[:ymin]}" if properties[:ymin]
+    if dual_axis
+      url_parts << "yMinLeft=#{properties[:ymin]}" if properties[:ymin]
+      url_parts << "yMaxLeft=#{properties[:ymax]}" if properties[:ymax]
+    else
+      url_parts << "yMin=#{properties[:ymin]}" if properties[:ymin]
+      url_parts << "yMax=#{properties[:ymax]}" if properties[:ymax]
+    end
     url_parts << "yMinRight=#{properties[:yminright]}" if properties[:yminright]
-    url_parts << "yMax=#{properties[:ymax]}" if properties[:ymax]
     url_parts << "yMaxRight=#{properties[:ymaxright]}" if properties[:ymaxright]
     url_parts << "yUnitSystem=#{properties[:yunit_system]}" if properties[:yunit_system]
     url_parts << "lineWidth=#{properties[:linewidth]}" if properties[:linewidth]
