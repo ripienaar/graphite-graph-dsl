@@ -120,5 +120,5 @@ elsif results = check_data(check_data, warns.min, warns.max)
   print_and_exit results, 1
 
 else
-  status_exit "OK - All data within expected ranges", 0
+  status_exit "#{graph.split('/').last.split('.').first} OK - #{check_data}", 0
 end
