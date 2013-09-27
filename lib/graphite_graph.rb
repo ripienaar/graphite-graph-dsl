@@ -338,6 +338,7 @@ class GraphiteGraph
         elsif target[:as_percent]
           graphite_target = "asPercent(#{graphite_target},#{target[:as_percent]})"
         end
+        graphite_target = "summarize(#{graphite_target},\"#{target[:summarize]}\")" if target[:summarize]
         graphite_target = "drawAsInfinite(#{graphite_target})" if target[:line]
         graphite_target = "movingAverage(#{graphite_target},#{target[:smoothing]})" if target[:smoothing]
 
