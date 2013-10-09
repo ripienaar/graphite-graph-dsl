@@ -310,6 +310,10 @@ class GraphiteGraph
 
         graphite_target = target[:data]
 
+        graphite_target = "removeAbovePercentile(#{graphite_target},#{target[:remove_above_percentile]})" if target[:remove_above_percentile]
+        graphite_target = "removeAboveValue(#{graphite_target},#{target[:remove_above_value]})" if target[:remove_above_value]
+        graphite_target = "removeBelowPercentile(#{graphite_target},#{target[:remove_below_percentile]})" if target[:remove_below_percentile]
+        graphite_target = "removeBelowValue(#{graphite_target},#{target[:remove_below_value]})" if target[:remove_below_value]
         graphite_target = "lineWidth(#{graphite_target},#{target[:field_linewidth]})" if target[:field_linewidth]
         graphite_target = "keepLastValue(#{graphite_target})" if target[:keep_last_value]
         graphite_target = "sum(#{graphite_target})" if target[:sum]
