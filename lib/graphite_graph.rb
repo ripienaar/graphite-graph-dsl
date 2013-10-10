@@ -334,6 +334,7 @@ class GraphiteGraph
           graphite_target = "nonNegativeDerivative(#{graphite_target})"
         end
         graphite_target = "sum(#{graphite_target})" if target[:sum]
+        graphite_target = "sumSeriesWithWildcard(#{graphite_target},#{target[:sum_with_wildcard]})" if target[:sum_with_wildcard]
         graphite_target = "highestAverage(#{graphite_target},#{target[:highest_average]})" if target[:highest_average]
         graphite_target = "scale(#{graphite_target},#{target[:scale]})" if target[:scale]
         graphite_target = "scaleToSeconds(#{graphite_target},#{target[:scale_to_seconds]})" if target[:scale_to_seconds]
