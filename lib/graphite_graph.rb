@@ -321,7 +321,11 @@ class GraphiteGraph
         raise "field #{name} does not have any data associated with it" unless target[:data]
 
         graphite_target = target[:data]
-
+        graphite_target = "transformNull(#{graphite_target},#{target[:transform_null]})" if target[:transform_null]
+        graphite_target = "lowestAverage(#{graphite_target},#{target[:lowest_average]})" if target[:lowest_average]
+        graphite_target = "highestAverage(#{graphite_target},#{target[:highest_average]})" if target[:highest_average]
+        graphite_target = "averageAbove(#{graphite_target},#{target[:average_above]})" if target[:average_above]
+        graphite_target = "averageBelow(#{graphite_target},#{target[:average_below]})" if target[:average_below]
         graphite_target = "removeAbovePercentile(#{graphite_target},#{target[:remove_above_percentile]})" if target[:remove_above_percentile]
         graphite_target = "removeAboveValue(#{graphite_target},#{target[:remove_above_value]})" if target[:remove_above_value]
         graphite_target = "removeBelowPercentile(#{graphite_target},#{target[:remove_below_percentile]})" if target[:remove_below_percentile]
