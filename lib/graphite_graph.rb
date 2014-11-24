@@ -35,6 +35,7 @@ class GraphiteGraph
                    :hide_legend => nil,
                    :hide_grid => nil,
                    :hide_y_axis => nil,
+                   :graph_only => nil,
                    :ymin => nil,
                    :yminright => nil,
                    :ymax => nil,
@@ -280,6 +281,7 @@ class GraphiteGraph
     url_parts << "areaMode=#{properties[:area]}" if properties[:area]
     url_parts << "hideAxes=#{properties[:hide_axes]}" if properties[:hide_axes]
     url_parts << "hideLegend=#{properties[:hide_legend]}" unless properties[:hide_legend].nil?
+    url_parts << "graphOnly=#{properties[:graph_only]}" if properties[:graph_only]
     url_parts << "hideGrid=#{properties[:hide_grid]}" if properties[:hide_grid]
     url_parts << "hideYAxis=#{properties[:hide_y_axis]}" if properties[:hide_y_axis]
     if dual_axis
