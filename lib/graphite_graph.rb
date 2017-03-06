@@ -37,8 +37,10 @@ class GraphiteGraph
                    :hide_y_axis => nil,
                    :graph_only => nil,
                    :ymin => nil,
+                   :yminleft => nil,
                    :yminright => nil,
                    :ymax => nil,
+                   :ymaxleft => nil,
                    :ymaxright => nil,
                    :yunit_system => nil,
                    :linewidth => nil,
@@ -291,6 +293,8 @@ class GraphiteGraph
       url_parts << "yMin=#{properties[:ymin]}" if properties[:ymin]
       url_parts << "yMax=#{properties[:ymax]}" if properties[:ymax]
     end
+    url_parts << "yMinLeft=#{properties[:yminleft]}" if properties[:yminleft]
+    url_parts << "yMaxLeft=#{properties[:ymaxleft]}" if properties[:ymaxleft]
     url_parts << "yMinRight=#{properties[:yminright]}" if properties[:yminright]
     url_parts << "yMaxRight=#{properties[:ymaxright]}" if properties[:ymaxright]
     url_parts << "yUnitSystem=#{properties[:yunit_system]}" if properties[:yunit_system]
