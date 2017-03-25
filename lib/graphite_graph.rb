@@ -363,7 +363,11 @@ class GraphiteGraph
 
         unless target.include?(:subgroup)
           if target[:alias_by_node]
-            graphite_target = "aliasByNode(#{graphite_target},#{target[:alias_by_node]})"
+            if target[:alias_by_node].is_a? Array
+              graphite_target = "aliasByNode(#{graphite_target},#{target[:alias_by_node].join(",")})"
+            else:
+              graphite_target = "aliasByNode(#{graphite_target},#{target[:alias_by_node]})"
+            end
           elsif target[:alias_sub_search]
             graphite_target = "aliasSub(#{graphite_target},\"#{target[:alias_sub_search]}\",\"#{target[:alias_sub_replace]}\")"
           elsif target[:alias]
